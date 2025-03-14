@@ -1,0 +1,43 @@
+{% if product.metafields.review_summary.average_rating != blank %}
+    {% liquid 
+        assign avergae_rating = product.metafields.review_summary.average_rating.value
+        assign average_rating_review_count = product.metafields.review_summary.average_rating_review_count.value
+        assign average_rating_rounded = avergae_rating | round: 1
+    %}
+{% elsif request.design_mode %}
+    {% liquid 
+        assign average_rating_review_count = '100'
+        assign average_rating_rounded = 5
+    %}
+{% endif %}
+
+{% if product.metafields.review_summary.published.value == true or request.design_mode %}
+    <div class="onereview-rating">
+        {{ avergae_rating }}
+        <span class="onereview-rating__stars">
+            {% render 'onereview-stars', rating: average_rating_rounded %}
+        </span>
+        {{ average_rating_review_count }} online ratings
+    </div>
+{% endif %}
+
+<style>
+  .onereview-rating {
+      display: flex;
+      align-items: center;
+      --onereview-star-color: #fdb731;
+      cursor: pointer;
+  }
+  
+  .onereview-rating__stars {
+      display: flex;
+      margin: 0 0.35em;
+      color: var(--onereview-star-color);
+  }
+  
+  .onereview-rating__stars svg {
+      display: block;
+      width: 1.2em;
+      height: 1.2em;
+  }
+</style>
