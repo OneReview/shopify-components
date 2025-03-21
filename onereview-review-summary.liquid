@@ -2,9 +2,9 @@
 
     if product.metafields.review_summary.average_rating != blank
 
-        assign avergae_rating = product.metafields.review_summary.average_rating.value
+        assign average_rating = product.metafields.review_summary.average_rating.value
         assign average_rating_review_count = product.metafields.review_summary.average_rating_review_count.value
-        assign average_rating_rounded = avergae_rating | round: 1
+        assign average_rating_rounded = average_rating | round: 1
 
         assign summary = product.metafields.review_summary.summary.value
         assign pros = product.metafields.review_summary.pros.value
@@ -18,7 +18,7 @@
 
     elsif request.design_mode
         assign average_rating_review_count = '100'
-        assign avergae_rating = 4.5
+        assign average_rating = 4.5
         assign average_rating_rounded = 4.5
 
         assign summary = 'This is placeholder text. This paragraph will change depending on the product, but it will be a brief overview of what people said about the product in the online reviews.'
@@ -62,7 +62,7 @@
     {% if summary != blank or pros != blank or cons != blank %}
         {% capture rating_summary %}
             <div class="onereview-summary__rating">
-              <p >{{ avergae_rating }}</p>
+              <p >{{ average_rating }}</p>
             </div>
             <div class="onereview-summary__stars">
                 {% render 'onereview-stars', rating: average_rating_rounded %}
