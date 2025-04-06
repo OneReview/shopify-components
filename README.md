@@ -16,11 +16,11 @@ Public github repo for OneReview app block code for custom implementations.
 
 ![Star rating .liquid component screenshot](img/onereview-star-rating.png)
 
-### onereview-collection-stars.liquid
+### onereview-general-stars.liquid
 
-- should be inserted on a collection template page
+- can be inserted on a collection, search or home page
 
-![Collection stars .liquid component screenshot](img/onereview-collection-stars.png)
+![General stars .liquid component screenshot](img/onereview-collection-stars.png)
 
 ### onereview-stars.liquid
 
