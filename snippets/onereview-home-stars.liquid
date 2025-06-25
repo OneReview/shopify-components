@@ -1,0 +1,85 @@
+<script id="OneReviewData" type="application/json">
+    {
+      "all_reviewed_products": {{ true }},
+      "empty_products": {{ false }},
+      "products": [
+        {% comment %}For home page - check template and try to get featured products{% endcomment %}
+        {% if template == 'index' %}
+          {% if products.size > 0 or search.results.size > 0 %},{% endif %}
+          
+          {% comment %}Try collections.frontpage first (common default){% endcomment %}
+          {% if collections.frontpage.products.size > 0 %}
+            {% for product in collections.frontpage.products %}
+              {% liquid 
+                if product.metafields.review_summary.published.value == true and product.metafields.review_summary.average_rating != blank
+                  assign average_rating = product.metafields.review_summary.average_rating.value | round: 1
+                  assign review_count = product.metafields.review_summary.average_rating_review_count.value | default: '0'
+                elsif request.design_mode
+                  assign average_rating = 4.7
+                  assign review_count = '42'
+                else
+                  assign average_rating = 0
+                  assign review_count = '0'
+                endif
+              %}
+              {
+                "id": {{ product.id }},
+                "title": {{ product.title | json }},
+                "average_rating": {{ average_rating }},
+                "review_count": "{{ review_count }}"
+              }
+              {% unless forloop.last %},{% endunless %}
+            {% endfor %}
+          {% comment %}Then try collections.featured{% endcomment %}
+          {% elsif collections.featured.products.size > 0 %}
+            {% for product in collections.featured.products %}
+              {% liquid 
+                if product.metafields.review_summary.published.value == true and product.metafields.review_summary.average_rating != blank
+                  assign average_rating = product.metafields.review_summary.average_rating.value | round: 1
+                  assign review_count = product.metafields.review_summary.average_rating_review_count.value | default: '0'
+                elsif request.design_mode
+                  assign average_rating = 4.7
+                  assign review_count = '42'
+                else
+                  assign average_rating = 0
+                  assign review_count = '0'
+                endif
+              %}
+              {
+                "id": {{ product.id }},
+                "title": {{ product.title | json }},
+                "average_rating": {{ average_rating }},
+                "review_count": "{{ review_count }}"
+              }
+              {% unless forloop.last %},{% endunless %}
+            {% endfor %}
+          {% comment %}Finally try collections.all as last resort{% endcomment %}
+          {% elsif collections.all.products.size > 0 %}
+            {% for product in collections.all.products %}
+              {% liquid 
+                if product.metafields.review_summary.published.value == true and product.metafields.review_summary.average_rating != blank
+                  assign average_rating = product.metafields.review_summary.average_rating.value | round: 1
+                  assign review_count = product.metafields.review_summary.average_rating_review_count.value | default: '0'
+                elsif request.design_mode
+                  assign average_rating = 4.7
+                  assign review_count = '42'
+                else
+                  assign average_rating = 0
+                  assign review_count = '0'
+                endif
+              %}
+              {
+                "id": {{ product.id }},
+                "title": {{ product.title | json }},
+                "average_rating": {{ average_rating }},
+                "review_count": "{{ review_count }}"
+              }
+              {% unless forloop.last %},{% endunless %}
+            {% endfor %}
+          {% endif %}
+        {% endif %}
+      ]
+    }
+</script>
+
+{%  render 'onereview-general-stars' %}

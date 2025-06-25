@@ -1,0 +1,37 @@
+<script id="OneReviewData" type="application/json">
+    {
+      "all_reviewed_products": {{ true }},
+      "empty_products": {{ false }},
+      "products": [
+        {% comment %}For search pages{% endcomment %}
+        {% if search.results.size > 0 %}
+          {% if products.size > 0 %},{% endif %}
+          {% for product in search.results %}
+            {% if product.object_type == 'product' %}
+              {% liquid 
+                if product.metafields.review_summary.published.value == true and product.metafields.review_summary.average_rating != blank
+                  assign average_rating = product.metafields.review_summary.average_rating.value | round: 1
+                  assign review_count = product.metafields.review_summary.average_rating_review_count.value | default: '0'
+                elsif request.design_mode
+                  assign average_rating = 4.7
+                  assign review_count = '42'
+                else
+                  assign average_rating = 0
+                  assign review_count = '0'
+                endif
+              %}
+              {
+                "id": {{ product.id }},
+                "title": {{ product.title | json }},
+                "average_rating": {{ average_rating }},
+                "review_count": "{{ review_count }}"
+              }
+              {% unless forloop.last %}{% if forloop.index < search.results.size %}{% if search.results[forloop.index].object_type == 'product' %},{% endif %}{% endif %}{% endunless %}
+            {% endif %}
+          {% endfor %}
+        {% endif %}
+      ]
+    }
+</script>
+
+{%  render 'onereview-general-stars' %}

@@ -1,0 +1,213 @@
+<style>
+  /* collection/search/home stars */
+  .onereview-stars {
+    display: flex;
+    align-items: center;
+    --onereview-star-color: #fdb731;
+    height: 1.8em;
+    font-size:1rem;
+  }
+
+  .onereview-stars svg {
+    display: block;
+    width: 1.2em;
+    height: 1.2em;
+    color: var(--onereview-star-color);
+  }
+
+  .onereview-rating {
+    margin-right: 0.3em;
+    flex-shrink: 0;
+  }
+
+  .onereview-reviewCount {
+    margin-left: 0.3em;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 600px) {
+    .onereview-stars {
+      font-size: 0.9em;
+    }
+  }
+
+  /* onereview-star-rating */
+  .onereview-rating {
+    display: flex;
+    align-items: center;
+    --onereview-star-color: #fdb731;
+    cursor: pointer;
+  }
+
+  .onereview-rating__stars {
+    display: flex;
+    margin: 0 0.35em;
+    color: var(--onereview-star-color);
+  }
+
+  .onereview-rating__stars svg {
+    display: block;
+    width: 1.2em;
+    height: 1.2em;
+  }
+
+  /* onereview-review-summary */
+  .onereview-summary {
+    --onereview-summary-bg: #fff;
+    --onereview-summary-border: #e9e8e7;
+    --onereview-summary-color: #333;
+    --onereview-summary-heading-color: #000;
+    --onereview-padding: 20px;
+    --onereview-side-padding: var(--onereview-padding);
+    --onereview-main-padding: var(--onereview-padding);
+    --onereview-star-color: #fdb731;
+
+    position: relative;
+    background-color: var(--onereview-summary-bg);
+    border: 1px solid var(--onereview-summary-border);
+    color: var(--onereview-summary-color);
+    margin: 40px 0;
+    padding-bottom: 32px;
+  }
+
+  .onereview-summary--dropshadow {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .onereview-summary__side {
+    display: none;
+  }
+
+  .onereview-summary__side,
+  .onereview-summary__mobile-summary {
+    padding: var(--onereview-side-padding);
+    text-align: center;
+  }
+
+  .onereview-summary__rating {
+    display: flex;
+    justify-content: center;
+    font-size: 4rem;
+    font-weight: bold;
+    margin: 0;
+  }
+
+  .onereview-summary__stars {
+    display: flex;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin: 0;
+    color: var(--onereview-star-color);
+  }
+
+  .onereview-summary__stars svg {
+    display: block;
+    width: 1.5em;
+    height: 1.5em;
+  }
+
+  .onereview-summary__count {
+    margin: 10px 0 0;
+  }
+
+  .onereview-summary__main {
+    padding: var(--onereview-main-padding);
+  }
+
+  .onereview-summary__pros {
+    margin: 10px 0 10px 0;
+  }
+
+  .onereview-summary h2 {
+    margin: 0 0 10px 0;
+    color: var(--onereview-summary-heading-color);
+    font-weight: bold;
+    font-size: var(--text-10xl);
+  }
+
+  .onereview-summary h3 {
+    font-weight: bold;
+    font-size: var(--text-xl);
+  }
+
+  .onereview-summary__powered-by {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    font-size: 12px;
+    text-decoration: none;
+    color: #3a4975;
+  }
+
+  .onereview-summary__powered-by span {
+    color: #297254;
+  }
+
+  .onereview-summary__tooltip {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .onereview-summary__tooltip svg {
+    width: 1.1em;
+    height: auto;
+    color: rgb(208, 126, 77);
+  }
+
+  .onereview-summary__tooltip-text {
+    visibility: hidden;
+    background-color: white;
+    color: black;
+    text-align: center;
+    padding: 5px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    line-height: 1.5;
+    position: absolute;
+    z-index: 1;
+    max-width: 120px;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    box-shadow: 0 0 30px 10px rgb(0 0 0 / 10%);
+    overflow: hidden;
+  }
+
+  @media screen and (min-width: 768px) {
+    .onereview-summary__tooltip-text {
+      max-width: 280px;
+    }
+  }
+
+  .onereview-summary__tooltip-text a {
+    color: black;
+    text-decoration: underline;
+  }
+
+  .onereview-summary__tooltip-text a:hover,
+  .onereview-summary__tooltip-text a:focus {
+    text-decoration: none;
+  }
+
+  .onereview-summary__tooltip:hover .onereview-summary__tooltip-text {
+    visibility: visible;
+  }
+
+  @media screen and (min-width: 768px) {
+    .onereview-summary {
+      display: flex;
+      align-items: center;
+    }
+    .onereview-summary__side {
+      display: block;
+      width: 25%;
+    }
+    .onereview-summary__main {
+      width: 75%;
+    }
+    .onereview-summary__mobile-summary {
+      display: none;
+    }
+  }
+</style>
