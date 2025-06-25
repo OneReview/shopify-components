@@ -1,121 +1,4 @@
-<script id="OneReviewData" type="application/json">
-    {
-      "all_reviewed_products": {{ block.settings.all_reviewed_products | json }},
-      "empty_products": {{ block.settings.empty_products | json }},
-      "products": [
-        {% comment %}For collection pages{% endcomment %}
-        {% if products.size > 0 %}
-          {% for product in products %}
-            {
-              "id": {{ product.id }},
-              "title": {{ product.title | json }},
-              "average_rating": {% if product.metafields.review_summary.published.value == true %}
-                {{ product.metafields.review_summary.average_rating.value | round: 1 }}
-              {% else %}
-                0
-              {% endif %},
-              "review_count": {% if product.metafields.review_summary.published.value == true %}
-                "{{ product.metafields.review_summary.average_rating_review_count.value | default: '0' }}"
-              {% else %}
-                "0" 
-              {% endif %}
-            }
-            {% unless forloop.last %},{% endunless %}
-          {% endfor %}
-        {% endif %}
-
-        {% comment %}For search pages{% endcomment %}
-        {% if search.results.size > 0 %}
-          {% if products.size > 0 %},{% endif %}
-          {% for product in search.results %}
-            {% if product.object_type == 'product' %}
-              {
-                "id": {{ product.id }},
-                "title": {{ product.title | json }},
-                "average_rating": {% if product.metafields.review_summary.published.value == true %}
-                  {{ product.metafields.review_summary.average_rating.value | round: 1 }}
-                {% else %}
-                  0
-                {% endif %},
-                "review_count": {% if product.metafields.review_summary.published.value == true %}
-                  "{{ product.metafields.review_summary.average_rating_review_count.value | default: '0' }}"
-                {% else %}
-                  "0" 
-                {% endif %}
-              }
-              {% unless forloop.last %}{% if forloop.index < search.results.size %}{% if search.results[forloop.index].object_type == 'product' %},{% endif %}{% endif %}{% endunless %}
-            {% endif %}
-          {% endfor %}
-        {% endif %}
-
-        {% comment %}For home page - check template and try to get featured products{% endcomment %}
-        {% if template == 'index' %}
-          {% if products.size > 0 or search.results.size > 0 %},{% endif %}
-          
-          {% comment %}Try collections.frontpage first (common default){% endcomment %}
-          {% if collections.frontpage.products.size > 0 %}
-            {% for product in collections.frontpage.products limit: 12 %}
-              {
-                "id": {{ product.id }},
-                "title": {{ product.title | json }},
-                "average_rating": {% if product.metafields.review_summary.published.value == true %}
-                  {{ product.metafields.review_summary.average_rating.value | round: 1 }}
-                {% else %}
-                  0
-                {% endif %},
-                "review_count": {% if product.metafields.review_summary.published.value == true %}
-                  "{{ product.metafields.review_summary.average_rating_review_count.value | default: '0' }}"
-                {% else %}
-                  "0" 
-                {% endif %}
-              }
-              {% unless forloop.last %},{% endunless %}
-            {% endfor %}
-          {% comment %}Then try collections.featured{% endcomment %}
-          {% elsif collections.featured.products.size > 0 %}
-            {% for product in collections.featured.products limit: 12 %}
-              {
-                "id": {{ product.id }},
-                "title": {{ product.title | json }},
-                "average_rating": {% if product.metafields.review_summary.published.value == true %}
-                  {{ product.metafields.review_summary.average_rating.value | round: 1 }}
-                {% else %}
-                  0
-                {% endif %},
-                "review_count": {% if product.metafields.review_summary.published.value == true %}
-                  "{{ product.metafields.review_summary.average_rating_review_count.value | default: '0' }}"
-                {% else %}
-                  "0" 
-                {% endif %}
-              }
-              {% unless forloop.last %},{% endunless %}
-            {% endfor %}
-          {% comment %}Finally try collections.all as last resort{% endcomment %}
-          {% elsif collections.all.products.size > 0 %}
-            {% for product in collections.all.products limit: 12 %}
-              {
-                "id": {{ product.id }},
-                "title": {{ product.title | json }},
-                "average_rating": {% if product.metafields.review_summary.published.value == true %}
-                  {{ product.metafields.review_summary.average_rating.value | round: 1 }}
-                {% else %}
-                  0
-                {% endif %},
-                "review_count": {% if product.metafields.review_summary.published.value == true %}
-                  "{{ product.metafields.review_summary.average_rating_review_count.value | default: '0' }}"
-                {% else %}
-                  "0" 
-                {% endif %}
-              }
-              {% unless forloop.last %},{% endunless %}
-            {% endfor %}
-          {% endif %}
-        {% endif %}
-      ]
-    }
-</script>
-
-<script id="OneReviewGeneralStars" type="application/javascript">
+<script id="OneReviewGeneralStars" type="text/javascript">
   const oneReviewDataObserver = new MutationObserver(function (mutations) {
     const oneReviewDataElement = document.getElementById('OneReviewData')
 
@@ -305,10 +188,12 @@
       }
 
       // Get all children at this level
-      const levelSiblings = Array.from(currentAncestor.children).filter(
-        (child) => !pathToTitle.includes(child)
-      )
-
+      const levelSiblings = currentAncestor && currentAncestor.children 
+        ? Array.from(currentAncestor.children).filter(
+            (child) => !pathToTitle.includes(child)
+          )
+        : [];
+        
       // Check direct level siblings for price
       for (const sibling of levelSiblings) {
         // Check if the sibling itself has a price class
@@ -348,10 +233,11 @@
 
   function findFirstElementWithText(text) {
     const elements = findElementsWithText(text)
-    if (elements.length > 1) {
-      return elements.length > 0 ? elements[1] : null
-    } else if (elements.length > 0) {
-      return elements.length > 0 ? elements[0] : null
+    
+    if (elements.length > 0) {
+      return elements[0]
+    } else {
+      return []
     }
   }
 
@@ -370,35 +256,3 @@
     return element
   }
 </script>
-
-<style>
-  .onereview-stars {
-    display: flex;
-    align-items: center;
-    --onereview-star-color: #fdb731;
-    height: 1.8em;
-  }
-
-  .onereview-stars svg {
-    display: block;
-    width: 1.2em;
-    height: 1.2em;
-    color: var(--onereview-star-color);
-  }
-
-  .onereview-rating {
-    margin-right: 0.3em;
-    flex-shrink: 0;
-  }
-
-  .onereview-reviewCount {
-    margin-left: 0.3em;
-    flex-shrink: 0;
-  }
-
-  @media (max-width: 600px) {
-    .onereview-stars {
-      font-size: 0.9em;
-    }
-  }
-</style>

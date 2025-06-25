@@ -1,0 +1,77 @@
+{% liquid
+  if product.metafields.review_summary.average_rating != blank
+    assign average_rating = product.metafields.review_summary.average_rating.value
+    assign average_rating_review_count = product.metafields.review_summary.average_rating_review_count.value
+    assign average_rating_rounded = average_rating | round: 1
+
+    assign summary = product.metafields.review_summary.summary.value
+    assign pros = product.metafields.review_summary.pros.value
+    assign cons = product.metafields.review_summary.cons.value
+
+  elsif request.design_mode
+    assign average_rating_review_count = '100'
+    assign average_rating = 4.5
+    assign average_rating_rounded = 4.5
+
+    assign summary = 'This is placeholder text. This paragraph will change depending on the product, but it will be a brief overview of what people said about the product in the online reviews.'
+    assign pros = 'This section will include a bulleted list of pros from the online reviews we found.'
+    assign cons = 'This section will include a bulleted list of cons from the online reviews we found.'
+  endif
+
+  assign heading = 'Summary of Online Reviews'
+  assign summary_heading = 'What people like'
+  assign pros_heading = 'Pros'
+  assign cons_heading = 'Cons'
+%}
+
+{% if product.metafields.review_summary.published.value == true or request.design_mode %}
+  {% if summary != blank or pros != blank or cons != blank %}
+    {% capture rating_summary %}
+            <div class="onereview-summary__rating">
+              <p >{{ average_rating }}</p>
+            </div>
+            <div class="onereview-summary__stars">
+                {% render 'onereview-stars', rating: average_rating_rounded %}
+            </div>
+            <div class="onereview-summary__count">
+                {{ average_rating_review_count }} online ratings
+                <div class="onereview-summary__tooltip">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" fill="currentColor"/></svg>
+                    <div class="onereview-summary__tooltip-text">The summary star rating & review is based on aggregated reviews of this product across the web. It cannot be altered by the merchant and can be verified by emailing <a href="mailto:support@onereview.app">support@onereview.app</a>.</div>
+                </div>
+            </div>
+        {% endcapture %}
+    <div class="onereview-summary">
+      <div class="onereview-summary__side">
+        {{ rating_summary }}
+      </div>
+      <div class="onereview-summary__main">
+        <h2>{{ heading }}</h2>
+        <div class="onereview-summary__mobile-summary">
+          {{ rating_summary }}
+        </div>
+        {% if summary != blank %}
+          <div class="onereview-summary__overall">
+            <h3>{{ summary_heading }}</h3>
+            <div>{{ summary }}</div>
+          </div>
+        {% endif %}
+        {% if pros != blank %}
+          <div class="onereview-summary__pros">
+            <h3>{{ pros_heading }}</h3>
+            <div>{{ pros }}</div>
+          </div>
+        {% endif %}
+        {% if cons != blank %}
+          <div class="onereview-summary__cons">
+            <h3>{{ cons_heading }}</h3>
+            <div>{{ cons }}</div>
+          </div>
+        {% endif %}
+      </div>
+      <a href="https://www.onereview.app/" target="_blank" class="onereview-summary__powered-by"
+        >Powered by <span>OneReview</span></a
+      >
+    </div>
+  {% endif %}
+{% endif %}
