@@ -69,3 +69,17 @@ Public github repo for OneReview app block code for custom implementations.
 ```liquid
 {% render 'onereview-collection-stars.liquid' %}
 ```
+
+8. Navigate to the home/index page you would like to add the "Home Stars" app block to, add the following code at the bottom of the page, to render star ratings, below products as they appear:
+
+```liquid
+{% render 'onereview-home-stars.liquid' %}
+```
+
+9. Navigate to the search page you would like to add the "Search Stars" app block to, add the following code at the bottom of the page, to render star ratings, below products as they appear:
+
+```liquid
+{% render 'onereview-search-stars.liquid' %}
+```
+
+10. Update any styling changes in the onereview-css.liquid file, once the test data is appearing in the code editor
