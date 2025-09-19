@@ -112,7 +112,7 @@
       const stars = createCollectionStarElement(product)
 
       // Find product container more reliably - products may have different DOM structures after pagination
-      const titleElement = findFirstElementWithText(product.title)
+      const titleElement = findFirstElementWithText(product)
 
       if (titleElement) {
         const priceContainer = findPriceContainer(titleElement)
@@ -216,14 +216,15 @@
     return null
   }
 
-  function findElementsWithText(text) {
-    if (typeof text !== 'string') {
+  function findElementsWithText(product) {
+    if (typeof product.text !== 'string') {
       throw new Error('The argument must be a string representing the text to search for.')
     }
 
     const selectors = 'h1, h2, h3, h4, h5, h6, p, span, a'
 
     const elements = Array.from(document.querySelectorAll(selectors))
+    const currentProductId = product.id.toString()
     return elements.filter((element) => {
       if (element.textContent.includes(text)) {
         return element.textContent.replace(/\s+/g, '') === text.replace(/\s+/g, '')
