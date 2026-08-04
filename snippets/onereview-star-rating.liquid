@@ -1,22 +1,86 @@
+{%- comment -%}
+  OneReview — partial implementation for custom theme integrations.
+  The recommended way to add OneReview to a storefront is the app's theme app
+  block: Shopify admin > Online Store > Themes > Customize > Add block >
+  "Star Rating". Use this file only where the app block cannot be used. It may
+  be missing features the app block has, it is not covered by automated tests,
+  and it can lag behind the app. Requires the OneReview app to be installed on
+  the store.
+  https://github.com/OneReview/shopify-components
+
+  Place on a product template. Optional render parameters (all have the same
+  defaults as the app block):
+    star_color        - CSS color for the stars. Default #fdb731.
+    custom_text       - Word after the review count. Default "reviews".
+    tooltip           - true to show the explainer tooltip. Default false.
+    tooltip_location  - top | right | bottom | left. Default bottom.
+  Depends on: onereview-stars.liquid, assets/onereview-star-rating.css,
+  assets/onereview-star-rating.js (and assets/onereview-summary.css when the
+  tooltip is enabled).
+{%- endcomment -%}
+
+{{ 'onereview-star-rating.css' | asset_url | stylesheet_tag }}
+{%- if tooltip -%}
+    {{ 'onereview-summary.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+<script src="{{ 'onereview-star-rating.js' | asset_url }}" defer></script>
+
 {% if product.metafields.review_summary.average_rating != blank %}
-    {% liquid 
-        assign avergae_rating = product.metafields.review_summary.average_rating.value
+    {% liquid
+        assign average_rating = product.metafields.review_summary.average_rating.value
         assign average_rating_review_count = product.metafields.review_summary.average_rating_review_count.value
-        assign average_rating_rounded = avergae_rating | round: 1
+        assign average_rating_rounded = average_rating | round: 1
     %}
 {% elsif request.design_mode %}
-    {% liquid 
+    {% liquid
         assign average_rating_review_count = '100'
         assign average_rating_rounded = 5
     %}
 {% endif %}
 
+{% assign custom_text = custom_text | default: 'reviews' %}
+
 {% if product.metafields.review_summary.published.value == true or request.design_mode %}
     <div class="onereview-rating">
-        {{ avergae_rating }}
+        {{ average_rating }}
         <span class="onereview-rating__stars">
             {% render 'onereview-stars', rating: average_rating_rounded %}
         </span>
-        {{ average_rating_review_count }} online ratings
+        {{ average_rating_review_count }} online {{ custom_text }}
+
+        {% if tooltip %}
+            <div class="onereview-summary__tooltip">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--!Font Awesome Free 6.5.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2024 Fonticons, Inc.--><path d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zM216 336h24V272H216c-13.3 0-24-10.7-24-24s10.7-24 24-24h48c13.3 0 24 10.7 24 24v88h8c13.3 0 24 10.7 24 24s-10.7 24-24 24H216c-13.3 0-24-10.7-24-24s10.7-24 24-24zm40-208a32 32 0 1 1 0 64 32 32 0 1 1 0-64z" fill="currentColor"/></svg>
+                <div class="onereview-summary__tooltip-text{% if tooltip_location %} tooltip-{{ tooltip_location }}{% endif %}">The summary star rating & review is based on aggregated reviews of this product across the web. It cannot be altered by the merchant and can be verified by emailing <a href="mailto:support@onereview.app">support@onereview.app</a>.</div>
+            </div>
+        {% endif %}
     </div>
 {% endif %}
+
+
+<style>
+    .onereview-rating {
+        --onereview-star-color: #fdb731;
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+
+        .onereview-rating__stars {
+            display: flex;
+            margin: 0 0.35em;
+            color: var(--onereview-star-color);
+        }
+
+        .onereview-rating__stars svg {
+            display: block;
+            width: 1.2em;
+            height: 1.2em;
+        }
+
+        {%- if star_color != blank -%}
+            .onereview-rating__stars {
+                --onereview-star-color: {{ star_color }};
+            }
+        {%- endif -%}
+    }
+</style>

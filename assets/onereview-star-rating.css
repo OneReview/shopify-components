@@ -1,0 +1,38 @@
+.onereview-rating {
+	display: flex;
+	align-items: center;
+	--onereview-star-color: #fdb731;
+	cursor: pointer;
+}
+
+.onereview-rating__stars {
+	display: flex;
+	margin: 0 0.35em;
+	color: var(--onereview-star-color);
+}
+
+.onereview-rating__stars svg {
+	display: block;
+	width: 1.2em;
+	height: 1.2em;
+}
+
+@media screen and (min-width: 768px) {
+	.onereview-summary__tooltip-text {
+		min-width: 280px;
+	}
+}
+
+.onereview-summary__tooltip-text a {
+	color: black;
+	text-decoration: underline;
+}
+
+.onereview-summary__tooltip-text a:hover,
+.onereview-summary__tooltip-text a:focus {
+	text-decoration: none;
+}
+
+.onereview-summary__tooltip:hover .onereview-summary__tooltip-text {
+	visibility: visible;
+}

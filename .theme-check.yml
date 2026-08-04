@@ -1,0 +1,5 @@
+# This repo ships copy-paste components, not a complete theme, so the
+# whole-theme snippet-usage check does not apply here. Mirrors
+# extensions/onereview-summary/.theme-check.yml in the app repo.
+OrphanedSnippet:
+  enabled: false
