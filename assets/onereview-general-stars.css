@@ -1,0 +1,29 @@
+.onereview-stars {
+	display: flex;
+	align-items: center;
+	--onereview-star-color: #fdb731;
+	height: 1.8em;
+}
+
+.onereview-stars svg {
+	display: block;
+	width: 1.2em;
+	height: 1.2em;
+	color: var(--onereview-star-color);
+}
+
+.onereview-rating {
+	margin-right: 0.3em;
+	flex-shrink: 0;
+}
+
+.onereview-reviewCount {
+	margin-left: 0.3em;
+	flex-shrink: 0;
+}
+
+@media (max-width: 600px) {
+	.onereview-stars {
+		font-size: 0.9em;
+	}
+}
