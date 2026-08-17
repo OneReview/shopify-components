@@ -1,0 +1,17 @@
+# Liquid. Prettier has no native Liquid parser and would mangle the
+# {% %} / {{ }} tags, so every .liquid file is off limits.
+*.liquid
+
+# Binary / vector assets.
+*.png
+*.svg
+
+# GENERATED — do not format. This is minified esbuild output, mirrored from
+# extensions/onereview-summary/assets/general-stars.js in the shopify app
+# repo (built by its `build:extension` script). It is one 8KB line; prettier
+# would expand it to thousands and make it unreviewable.
+assets/onereview-general-stars.js
+
+# Never format dependencies.
+node_modules/
+package-lock.json
