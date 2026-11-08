@@ -46,7 +46,7 @@
         <span class="onereview-rating__stars">
             {% render 'onereview-stars', rating: average_rating_rounded %}
         </span>
-        {{ average_rating_review_count }} online {{ custom_text }}
+        {% if average_rating_review_count != blank %}{{ average_rating_review_count | escape }} online {{ custom_text }}{% endif %}
 
         {% if tooltip %}
             <div class="onereview-summary__tooltip">
