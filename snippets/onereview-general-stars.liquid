@@ -44,7 +44,7 @@
           {%- liquid
             if product.metafields.review_summary.published.value == true and product.metafields.review_summary.average_rating != blank
               assign rating = product.metafields.review_summary.average_rating.value | round: 1
-              assign review_count = product.metafields.review_summary.average_rating_review_count.value | default: '0'
+              assign review_count = product.metafields.review_summary.average_rating_review_count.value
             else
               assign rating = 0
               assign review_count = '0'
@@ -61,7 +61,7 @@
             {%- liquid
               if result.metafields.review_summary.published.value == true and result.metafields.review_summary.average_rating != blank
                 assign rating = result.metafields.review_summary.average_rating.value | round: 1
-                assign review_count = result.metafields.review_summary.average_rating_review_count.value | default: '0'
+                assign review_count = result.metafields.review_summary.average_rating_review_count.value
               else
                 assign rating = 0
                 assign review_count = '0'
