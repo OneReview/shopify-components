@@ -2,7 +2,7 @@
 
 Public repo for OneReview app block code, for custom implementations.
 
-<!-- upstream-sync: 15391058a317c58217478a1878901bf9b451c942 -->
+<!-- upstream-sync: 73cee5a7d3000234f1b7786097189c25a9d2a679 -->
 
 ---
 
@@ -41,7 +41,7 @@ You do **not** need to enable the app block for these files to work — installi
 ## What's in here
 
 Synced from the OneReview app extension at commit
-`15391058a317c58217478a1878901bf9b451c942`.
+`73cee5a7d3000234f1b7786097189c25a9d2a679`.
 
 | File | Copy into your theme's | Notes |
 | --- | --- | --- |
